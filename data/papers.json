@@ -1,0 +1,23 @@
+[
+    {
+      "id": 1,
+      "title": "Tablet A",
+      "museum": "Sichuan Provincial Museum",
+      "location_found": "Chengdu",
+      "latitude": 30.67,
+      "longitude": 104.06,
+      "text": "Ancient inscription about grain tax in Han dynasty.",
+      "region": "Sichuan"
+    },
+    {
+      "id": 2,
+      "title": "Tablet B",
+      "museum": "Guangdong Museum",
+      "location_found": "Guangzhou",
+      "latitude": 23.13,
+      "longitude": 113.27,
+      "text": "Edict issued during the Song dynasty about irrigation.",
+      "region": "Guangdong"
+    }
+  ]
+  

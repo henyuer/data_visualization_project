@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ancient Stones Project</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <!-- Left: Filter -->
+    <div class="box left">
+      <h3>Filter by Region</h3>
+      <select id="region-select">
+        <option value="">All Regions</option>
+      </select>
+    </div>
+
+    <!-- Middle: Map -->
+    <div class="box middle">
+      <div id="china-map" style="height: 100%;"></div>
+    </div>
+
+    <!-- Right: Info Panels -->
+    <div class="box top-right">Selected Paper Info</div>
+    <div class="box bottom-right">Full Transcription</div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
