@@ -88,6 +88,8 @@ function populateRegionDropdown(data) {
   });
 }
 
+
+//-------------------------------------------------------
 //-------------------------------------------------------
 //-----------------pass information between modules-----------
 
@@ -99,7 +101,7 @@ function dispatch_shared_ids(idsArray, moduleIndex) {
     console.error("dispatch_shared_ids: idsArray must be an array");
     return
   }
-  if (typeof moduleIndex !== 'int' || moduleIndex > 4 || moduleIndex < 0) {
+  if (!Number.isInteger(moduleIndex) || moduleIndex > 4 || moduleIndex < 0) {
     console.error("dispatch_shared_ids: moduleIndex error")
     return;
   }
@@ -110,13 +112,14 @@ function dispatch_shared_ids(idsArray, moduleIndex) {
       ids: idsArray,
       module: modules[moduleIndex]
     },
-    bubbles: ture
+    bubbles: true
   });
 
   //dispatch event
   document.dispatchEvent(event);
 }
 
+//-------------------------------------------------------
 //----------------add event listener for each module--------
 
 //module 'left'
@@ -125,7 +128,7 @@ document.addEventListener('idsShared', (event) => {
     //self trigger event, ignore it 
     return;
   }
-  const ids_received = event.detail.idsArray;
+  const ids_received = event.detail.ids;
 
   // handle ids_reveived for 'left' module
   // TODO
@@ -139,7 +142,7 @@ document.addEventListener('idsShared', (event) => {
     //self trigger event, ignore it 
     return;
   }
-  const ids_received = event.detail.idsArray;
+  const ids_received = event.detail.ids;
 
   // handle ids_reveived for 'middle' module
   // TODO
@@ -153,7 +156,7 @@ document.addEventListener('idsShared', (event) => {
     //self trigger event, ignore it 
     return;
   }
-  const ids_received = event.detail.idsArray;
+  const ids_received = event.detail.ids;
 
   // handle ids_reveived for 'top-right' module
   // TODO
@@ -161,17 +164,41 @@ document.addEventListener('idsShared', (event) => {
 
 })
 
-//module 'bottom-rigth'
+//module 'bottom-right'
 document.addEventListener('idsShared', (event) => {
   if (event.detail.module === 'bottom-right') {
     //self trigger event, ignore it 
     return;
   }
-  const ids_received = event.detail.idsArray;
+  const ids_received = event.detail.ids;
 
   // handle ids_reveived for 'bottom-right' module
   // TODO
-
+  console.log('bottom-right');
+  console.log(ids_received);
 
 })
 
+//-------------------------------------------------------
+//--------------modules interaction----------
+// module 'left'
+const module_left = document.querySelector('.left');
+// TODO for 'left' interaction
+
+
+//module 'middle'
+const module_middle = document.querySelector('.middle');
+// TODO for 'middle' interaction
+
+
+//module 'top-right'
+const module_top_right = document.querySelector('.top-right');
+// TODO for 'top-right' interaction
+module_top_right.addEventListener('click', () => {
+  dispatch_shared_ids([1, 2, 3], 2);
+})
+
+
+// module 'bottom-right'
+const module_bottom_right = document.querySelector('.bottom-right');
+// TODO for 'bottom-right' interaction
