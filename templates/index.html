@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Ancient Stones Project</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='top-right.css')}}">
 </head>
+
 <body>
   <div class="container">
     <!-- Left: Filter -->
@@ -22,7 +25,28 @@
     </div>
 
     <!-- Right: Info Panels -->
-    <div class="box top-right">Selected Paper Info</div>
+    <div class="box top-right" style="display: flex;flex-direction: column;">
+      <div class="panel-header">
+        作品列表
+      </div>
+      <div class="list-container" style="flex-grow: 1;">
+        <ul>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+          <li>争座位帖</li>
+        </ul>
+      </div>
+    </div>
     <div class="box bottom-right">Full Transcription</div>
   </div>
 
@@ -30,4 +54,5 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>

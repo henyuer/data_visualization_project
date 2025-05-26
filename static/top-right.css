@@ -1,0 +1,100 @@
+.top-right {
+    background-color: #f8f9fa;
+    /* 非常浅的灰色背景，增加质感 */
+    border-radius: 8px;
+    /* 圆角边框 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* 细微的阴影增加立体感 */
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    /* 清晰的现代字体 */
+    color: #333;
+    /* 默认文字颜色 */
+    overflow: hidden;
+    /* 确保子元素的圆角和阴影效果正确显示 */
+}
+
+.top-right .panel-header {
+    /* height: 1.5em; */
+    padding: 16px 20px;
+    /* 舒适的内边距 */
+    background-color: #6c757d;
+    /* 柔和的灰色作为头部背景，与浅色文字搭配 */
+    color: #ffffff;
+    /* 头部文字用白色，对比清晰 */
+    font-size: 1.1em;
+    /* 稍大一点的字体 */
+    font-weight: 600;
+    /* 字体加粗 */
+    flex-shrink: 0;
+    /* 防止头部在空间不足时被压缩 */
+}
+
+.top-right .list-container {
+    overflow: auto;
+    min-height: 0;
+    /* 重要：确保flex item在内容过多时正确滚动 */
+    background-color: #ffffff;
+    /* 列表区域使用白色背景，与整体背景形成对比 */
+    padding: 8px 0;
+    /* 列表上下留一点间距 */
+}
+
+.top-right ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.top-right li {
+    /* white-space: nowrap; */
+    padding: 12px 20px;
+    /* 列表项内边距，左右与头部对齐 */
+    border-bottom: 1px solid #e9ecef;
+    /* 更细致的分隔线颜色 */
+    white-space: nowrap;
+    /* 文本不换行 */
+    overflow-x: auto;
+    /* 文本过长时水平滚动 */
+    cursor: pointer;
+    /* 鼠标手型 */
+    font-size: 0.95em;
+    color: #495057;
+    /* 列表项文字颜色，比默认深一点的灰色 */
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    /* 平滑过渡效果 */
+}
+
+.top-right li:last-child {
+    border-bottom: none;
+    /* 移除最后一个列表项的底部边框 */
+}
+
+.top-right li:hover {
+    background-color: #007bff;
+    /* 鼠标悬停时的背景色 - 使用一个明亮的强调色 */
+    color: #ffffff;
+    /* 悬停时文字变为白色 */
+}
+
+/* --- 滚动条美化 (可选，兼容性主要在 Webkit 内核浏览器) --- */
+.top-right .list-container::-webkit-scrollbar {
+    width: 8px;
+    /* 滚动条宽度 */
+}
+
+.top-right .list-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* 滚动条轨道背景 */
+    border-radius: 10px;
+}
+
+.top-right .list-container::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    /* 滚动条滑块颜色 */
+    border-radius: 10px;
+}
+
+.top-right .list-container::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+    /* 鼠标悬停在滑块上时的颜色 */
+}
