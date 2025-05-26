@@ -1,3 +1,4 @@
+import { fetchItems, displayList, handleListClick, handleIdsSharedM2 } from "./top-right.js";
 const map = L.map('china-map').setView([32, 104], 4);
 
 // Enhanced tile layer
@@ -213,11 +214,11 @@ function createMapFilterControl() {
       <option value="item">Items</option>
     </select>
   `;
-  
+
   // Add the control to the map container
   const mapContainer = document.getElementById('china-map');
   mapContainer.appendChild(filterControl);
-  
+
   return filterControl;
 }
 
@@ -257,7 +258,7 @@ function createMapStats() {
   // Add the stats to the map container
   const mapContainer = document.getElementById('china-map');
   mapContainer.appendChild(statsControl);
-  
+
   return statsControl;
 }
 
@@ -558,9 +559,9 @@ function renderMarkers(data) {
 // Enhanced map click to reset to default state
 map.on('click', (e) => {
   // Only reset if clicking on empty space
-  if (e.originalEvent.target === e.originalEvent.currentTarget || 
-      !e.originalEvent.target.closest('.leaflet-marker-icon')) {
-    
+  if (e.originalEvent.target === e.originalEvent.currentTarget ||
+    !e.originalEvent.target.closest('.leaflet-marker-icon')) {
+
     // Reset all markers to default
     markers.forEach(m => {
       switch(m.itemData.type) {
@@ -624,7 +625,7 @@ function populateMapRegionDropdown(data) {
     
     const mapElement = document.getElementById('china-map');
     mapElement.style.opacity = '0.8';
-    
+
     setTimeout(() => {
       renderMarkers(filtered);
       mapElement.style.opacity = '1';
@@ -639,7 +640,7 @@ function populateMapRegionDropdown(data) {
 }
 
 // Add keyboard shortcuts for better UX
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') {
     // Reset all markers and info panels with Escape key
     markers.forEach(m => {
@@ -672,7 +673,7 @@ document.addEventListener('DOMContentLoaded', function() {
   createMapFilterControl();
   createMapLegend();
   createMapStats();
-  
+
   // Initialize with welcome message
   document.querySelector('.top-right').innerHTML = `
     <div style="text-align: center; color: #666; padding: 20px;">
@@ -695,12 +696,12 @@ console.log('Displaying Papers, Authors, and Items on map');
 
 //-------------------------------------------------------
 //-------------------------------------------------------
-//-----------------pass information between modules-----------
+//-----------------transfer information between modules-----------
 
-modules = ['left', 'middle', 'top-right', 'bottom-right']
+export const modules = ['left', 'middle', 'top-right', 'bottom-right']
 
-// if a module need to trigger event, call this function to pass idsArray
-function dispatch_shared_ids(idsArray, moduleIndex) {
+// if a module need to trigger event, call this function to transfer idsArray
+export function dispatch_shared_ids(idsArray, moduleIndex) {
   if (!Array.isArray(idsArray)) {
     console.error("dispatch_shared_ids: idsArray must be an array");
     return
@@ -773,18 +774,7 @@ document.addEventListener('idsShared', (event) => {
 })
 
 //module 'top-right'
-document.addEventListener('idsShared', (event) => {
-  if (event.detail.module === 'top-right') {
-    //self trigger event, ignore it 
-    return;
-  }
-  const ids_received = event.detail.ids;
-
-  // handle ids_reveived for 'top-right' module
-  // TODO
-
-
-})
+document.addEventListener('idsShared', handleIdsSharedM2);
 
 //module 'bottom-right'
 document.addEventListener('idsShared', (event) => {
@@ -796,8 +786,6 @@ document.addEventListener('idsShared', (event) => {
 
   // handle ids_reveived for 'bottom-right' module
   // TODO
-  console.log('bottom-right');
-  console.log(ids_received);
 
 })
 
@@ -813,12 +801,8 @@ const module_middle = document.querySelector('.middle');
 // TODO for 'middle' interaction
 
 
-//module 'top-right'
-const module_top_right = document.querySelector('.top-right');
-// TODO for 'top-right' interaction
-module_top_right.addEventListener('click', () => {
-  dispatch_shared_ids([1, 2, 3], 2);
-})
+//  module 'top-right'
+// implemented in the module's initialization
 
 
 // module 'bottom-right'
