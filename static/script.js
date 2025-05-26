@@ -87,3 +87,91 @@ function populateRegionDropdown(data) {
     renderMarkers(filtered);
   });
 }
+
+//-------------------------------------------------------
+//-----------------pass information between modules-----------
+
+modules = ['left', 'middle', 'top-right', 'bottom-right']
+
+// if a module need to trigger event, call this function to pass idsArray
+function dispatch_shared_ids(idsArray, moduleIndex) {
+  if (!Array.isArray(idsArray)) {
+    console.error("dispatch_shared_ids: idsArray must be an array");
+    return
+  }
+  if (typeof moduleIndex !== 'int' || moduleIndex > 4 || moduleIndex < 0) {
+    console.error("dispatch_shared_ids: moduleIndex error")
+    return;
+  }
+
+  //create event
+  const event = new CustomEvent('idsShared', {
+    detail: {
+      ids: idsArray,
+      module: modules[moduleIndex]
+    },
+    bubbles: ture
+  });
+
+  //dispatch event
+  document.dispatchEvent(event);
+}
+
+//----------------add event listener for each module--------
+
+//module 'left'
+document.addEventListener('idsShared', (event) => {
+  if (event.detail.module === 'left') {
+    //self trigger event, ignore it 
+    return;
+  }
+  const ids_received = event.detail.idsArray;
+
+  // handle ids_reveived for 'left' module
+  // TODO
+
+
+})
+
+//module 'middle'
+document.addEventListener('idsShared', (event) => {
+  if (event.detail.module === 'middle') {
+    //self trigger event, ignore it 
+    return;
+  }
+  const ids_received = event.detail.idsArray;
+
+  // handle ids_reveived for 'middle' module
+  // TODO
+
+
+})
+
+//module 'top-right'
+document.addEventListener('idsShared', (event) => {
+  if (event.detail.module === 'top-right') {
+    //self trigger event, ignore it 
+    return;
+  }
+  const ids_received = event.detail.idsArray;
+
+  // handle ids_reveived for 'top-right' module
+  // TODO
+
+
+})
+
+//module 'bottom-rigth'
+document.addEventListener('idsShared', (event) => {
+  if (event.detail.module === 'bottom-right') {
+    //self trigger event, ignore it 
+    return;
+  }
+  const ids_received = event.detail.idsArray;
+
+  // handle ids_reveived for 'bottom-right' module
+  // TODO
+
+
+})
+
