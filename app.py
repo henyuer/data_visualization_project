@@ -21,6 +21,26 @@ def get_papers():
     print(f"Loaded {len(data)} papers")
     return jsonify(data)
 
+@app.route('/authors')
+def get_authors():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(base_dir, 'data', 'authors.json')
+    if not os.path.exists(path):
+        return f"File not found: {path}", 404
+    with open(path, encoding='utf-8') as f:
+        data = json.load(f)
+    return jsonify(data)
+
+@app.route('/items')
+def get_items():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(base_dir, 'data', 'items.json')
+    if not os.path.exists(path):
+        return f"File not found: {path}", 404
+    with open(path, encoding='utf-8') as f:
+        data = json.load(f)
+    return jsonify(data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
