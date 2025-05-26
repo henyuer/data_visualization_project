@@ -22,7 +22,7 @@ def get_papers():
     return jsonify(data)
 
 @app.route('/authors')
-def get_papers():
+def get_authors():
     base_dir = os.path.dirname(os.path.abspath(__file__))  # folder of app.py
     path = os.path.join(base_dir, 'data', 'authors.json')
     print("Looking for file at:", path)
@@ -35,7 +35,7 @@ def get_papers():
     return jsonify(data)
 
 @app.route('/items')
-def get_papers():
+def get_items():
     base_dir = os.path.dirname(os.path.abspath(__file__))  # folder of app.py
     path = os.path.join(base_dir, 'data', 'items.json')
     print("Looking for file at:", path)
