@@ -423,3 +423,120 @@ document.addEventListener('DOMContentLoaded', function() {
 
 console.log('Ancient Stones Project - Enhanced Map with Hover Information Loaded');
 console.log('Hover over markers to view paper details, click to zoom to location');
+
+
+//-------------------------------------------------------
+//-------------------------------------------------------
+//-----------------pass information between modules-----------
+
+modules = ['left', 'middle', 'top-right', 'bottom-right']
+
+// if a module need to trigger event, call this function to pass idsArray
+function dispatch_shared_ids(idsArray, moduleIndex) {
+  if (!Array.isArray(idsArray)) {
+    console.error("dispatch_shared_ids: idsArray must be an array");
+    return
+  }
+  if (!Number.isInteger(moduleIndex) || moduleIndex > 4 || moduleIndex < 0) {
+    console.error("dispatch_shared_ids: moduleIndex error")
+    return;
+  }
+
+  //create event
+  const event = new CustomEvent('idsShared', {
+    detail: {
+      ids: idsArray,
+      module: modules[moduleIndex]
+    },
+    bubbles: true
+  });
+
+  //dispatch event
+  document.dispatchEvent(event);
+}
+
+
+
+//-------------------------------------------------------
+//----------------add event listener for each module--------
+
+//module 'left'
+document.addEventListener('idsShared', (event) => {
+  if (event.detail.module === 'left') {
+    //self trigger event, ignore it 
+    return;
+  }
+  const ids_received = event.detail.ids;
+
+  // handle ids_reveived for 'left' module
+  // TODO
+
+
+})
+
+//module 'middle'
+document.addEventListener('idsShared', (event) => {
+  if (event.detail.module === 'middle') {
+    //self trigger event, ignore it 
+    return;
+  }
+  const ids_received = event.detail.ids;
+
+  // handle ids_reveived for 'middle' module
+  // TODO
+
+
+})
+
+//module 'top-right'
+document.addEventListener('idsShared', (event) => {
+  if (event.detail.module === 'top-right') {
+    //self trigger event, ignore it 
+    return;
+  }
+  const ids_received = event.detail.ids;
+
+  // handle ids_reveived for 'top-right' module
+  // TODO
+
+
+})
+
+//module 'bottom-right'
+document.addEventListener('idsShared', (event) => {
+  if (event.detail.module === 'bottom-right') {
+    //self trigger event, ignore it 
+    return;
+  }
+  const ids_received = event.detail.ids;
+
+  // handle ids_reveived for 'bottom-right' module
+  // TODO
+  console.log('bottom-right');
+  console.log(ids_received);
+
+})
+
+//-------------------------------------------------------
+//--------------modules interaction----------
+// module 'left'
+const module_left = document.querySelector('.left');
+// TODO for 'left' interaction
+
+
+//module 'middle'
+const module_middle = document.querySelector('.middle');
+// TODO for 'middle' interaction
+
+
+//module 'top-right'
+const module_top_right = document.querySelector('.top-right');
+// TODO for 'top-right' interaction
+module_top_right.addEventListener('click', () => {
+  dispatch_shared_ids([1, 2, 3], 2);
+})
+
+
+// module 'bottom-right'
+const module_bottom_right = document.querySelector('.bottom-right');
+// TODO for 'bottom-right' interaction
