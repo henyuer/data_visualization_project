@@ -1,7 +1,7 @@
 .top-right {
     background-color: #f8f9fa;
     /* 非常浅的灰色背景，增加质感 */
-    border-radius: 8px;
+    /* border-radius: 8px; */
     /* 圆角边框 */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     /* 细微的阴影增加立体感 */
@@ -60,7 +60,7 @@
     font-size: 0.95em;
     color: #495057;
     /* 列表项文字颜色，比默认深一点的灰色 */
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    /* transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out; */
     /* 平滑过渡效果 */
 }
 

@@ -1,3 +1,4 @@
+import { fetchItems, displayList, handleListClick, handleIdsSharedM2 } from "./top-right.js";
 const map = L.map('china-map').setView([32, 104], 4);
 
 // Enhanced tile layer
@@ -136,11 +137,11 @@ function createMapFilterControl() {
       <option value="">All Regions</option>
     </select>
   `;
-  
+
   // Add the control to the map container
   const mapContainer = document.getElementById('china-map');
   mapContainer.appendChild(filterControl);
-  
+
   return filterControl;
 }
 
@@ -150,11 +151,11 @@ function createMapStats() {
   statsControl.className = 'map-stats';
   statsControl.id = 'map-stats';
   statsControl.innerHTML = 'Loading papers...';
-  
+
   // Add the stats to the map container
   const mapContainer = document.getElementById('china-map');
   mapContainer.appendChild(statsControl);
-  
+
   return statsControl;
 }
 
@@ -181,12 +182,12 @@ fetch('/papers')
     console.error('Error fetching papers:', error);
     document.getElementById('map-stats').innerHTML = 'Error loading data';
     // Show error message in UI
-    document.querySelector('.top-right').innerHTML = `
-      <div style="color: #e74c3c; text-align: center; padding: 20px;">
-        <h3>Error Loading Data</h3>
-        <p>Failed to load paper data. Please refresh the page.</p>
-      </div>
-    `;
+    // document.querySelector('.top-right').innerHTML = `
+    //   <div style="color: #e74c3c; text-align: center; padding: 20px;">
+    //     <h3>Error Loading Data</h3>
+    //     <p>Failed to load paper data. Please refresh the page.</p>
+    //   </div>
+    // `;
   });
 
 function renderMarkers(data) {
@@ -230,7 +231,7 @@ function renderMarkers(data) {
     marker.bindPopup(popupContent);
 
     // Enhanced hover handler to show information
-    marker.on('mouseover', function() {
+    marker.on('mouseover', function () {
       // Update marker visual
       this.setIcon(L.divIcon({
         className: 'custom-marker hover',
@@ -248,19 +249,7 @@ function renderMarkers(data) {
         iconAnchor: [10, 10]
       }));
 
-      // Update info panels with paper information
-      document.querySelector('.top-right').innerHTML = `
-        <h3 style="color: #333; border-bottom: 2px solid #2980b9; padding-bottom: 8px; margin-bottom: 15px;">
-          ${paper.title}
-        </h3>
-        <div style="line-height: 1.6;">
-          <p style="margin: 8px 0;"><strong>Museum:</strong> ${paper.museum}</p>
-          <p style="margin: 8px 0;"><strong>Found in:</strong> ${paper.location_found}</p>
-          <p style="margin: 8px 0;"><strong>Region:</strong> ${paper.region}</p>
-          <p style="margin: 8px 0;"><strong>Coordinates:</strong> ${paper.latitude.toFixed(4)}°N, ${paper.longitude.toFixed(4)}°E</p>
-        </div>
-      `;
-
+      // // Update info panels with paper information
       document.querySelector('.bottom-right').innerHTML = `
         <h3 style="color: #333; border-bottom: 2px solid #2980b9; padding-bottom: 8px; margin-bottom: 15px;">
           Full Transcription
@@ -272,18 +261,10 @@ function renderMarkers(data) {
     });
 
     // Reset on mouse out
-    marker.on('mouseout', function() {
+    marker.on('mouseout', function () {
       // Reset marker visual
       this.setIcon(defaultIcon);
-      
-      // Reset info panels to default state
-      document.querySelector('.top-right').innerHTML = `
-        <div style="text-align: center; color: #666; padding: 20px;">
-          <h3>Paper Information</h3>
-          <p>Hover over any marker to view paper details</p>
-        </div>
-      `;
-      
+
       document.querySelector('.bottom-right').innerHTML = `
         <div style="text-align: center; color: #666; padding: 20px;">
           <h3>Full Transcription</h3>
@@ -308,20 +289,13 @@ function renderMarkers(data) {
 // Enhanced map click to reset to default state
 map.on('click', (e) => {
   // Only reset if clicking on empty space
-  if (e.originalEvent.target === e.originalEvent.currentTarget || 
-      !e.originalEvent.target.closest('.leaflet-marker-icon')) {
-    
+  if (e.originalEvent.target === e.originalEvent.currentTarget ||
+    !e.originalEvent.target.closest('.leaflet-marker-icon')) {
+
     // Reset all markers to default
     markers.forEach(m => m.setIcon(defaultIcon));
-    
+
     // Reset info panels to default hover instructions
-    document.querySelector('.top-right').innerHTML = `
-      <div style="text-align: center; color: #666; padding: 20px;">
-        <h3>Paper Information</h3>
-        <p>Hover over any marker to view paper details</p>
-      </div>
-    `;
-    
     document.querySelector('.bottom-right').innerHTML = `
       <div style="text-align: center; color: #666; padding: 20px;">
         <h3>Full Transcription</h3>
@@ -352,44 +326,29 @@ function populateMapRegionDropdown(data) {
     const filtered = region
       ? allPaperData.filter(p => p.region === region)
       : allPaperData;
-    
+
     // Add smooth transition effect
     const mapElement = document.getElementById('china-map');
     mapElement.style.opacity = '0.8';
-    
+
     setTimeout(() => {
       renderMarkers(filtered);
       mapElement.style.opacity = '1';
-      
+
       // Update stats
       updateMapStats(allPaperData.length, filtered.length, region);
-      
+
       // Update info panel with filter status but maintain hover instructions
-      document.querySelector('.top-right').innerHTML = `
-        <div style="text-align: center; color: #666; padding: 20px;">
-          <h3>Filter Applied: ${region || 'All Regions'}</h3>
-          <p>${statusMessage}</p>
-          <hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;">
-          <p style="font-size: 12px; color: #999;">Hover over any marker to view details</p>
-        </div>
-      `;
     }, 200);
   });
 }
 
 // Add keyboard shortcuts for better UX
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') {
     // Reset all markers and info panels with Escape key
     markers.forEach(m => m.setIcon(defaultIcon));
-    
-    document.querySelector('.top-right').innerHTML = `
-      <div style="text-align: center; color: #666; padding: 20px;">
-        <h3>Paper Information</h3>
-        <p>Hover over any marker to view paper details</p>
-      </div>
-    `;
-    
+
     document.querySelector('.bottom-right').innerHTML = `
       <div style="text-align: center; color: #666; padding: 20px;">
         <h3>Full Transcription</h3>
@@ -400,19 +359,12 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Initialize the map controls when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Create the filter control and stats display
   createMapFilterControl();
   createMapStats();
-  
+
   // Initialize with welcome message
-  document.querySelector('.top-right').innerHTML = `
-    <div style="text-align: center; color: #666; padding: 20px;">
-      <h3>Ancient Stones Project</h3>
-      <p>Loading paper data...</p>
-    </div>
-  `;
-  
   document.querySelector('.bottom-right').innerHTML = `
     <div style="text-align: center; color: #666; padding: 20px;">
       <h3>Getting Started</h3>
@@ -425,14 +377,31 @@ console.log('Ancient Stones Project - Enhanced Map with Hover Information Loaded
 console.log('Hover over markers to view paper details, click to zoom to location');
 
 
+//---------------------------------------------------
+// initialize the top-right module
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await fetchItems();
+    displayList();
+    const top_right_list = document.querySelector('#top-right-list');
+    if (top_right_list) {
+      top_right_list.addEventListener('click', handleListClick);
+    }
+  }
+  catch (error) {
+    console.error('display list in top-right failed');
+  }
+})
+
+
 //-------------------------------------------------------
 //-------------------------------------------------------
-//-----------------pass information between modules-----------
+//-----------------transfer information between modules-----------
 
-modules = ['left', 'middle', 'top-right', 'bottom-right']
+export const modules = ['left', 'middle', 'top-right', 'bottom-right']
 
-// if a module need to trigger event, call this function to pass idsArray
-function dispatch_shared_ids(idsArray, moduleIndex) {
+// if a module need to trigger event, call this function to transfer idsArray
+export function dispatch_shared_ids(idsArray, moduleIndex) {
   if (!Array.isArray(idsArray)) {
     console.error("dispatch_shared_ids: idsArray must be an array");
     return
@@ -489,18 +458,7 @@ document.addEventListener('idsShared', (event) => {
 })
 
 //module 'top-right'
-document.addEventListener('idsShared', (event) => {
-  if (event.detail.module === 'top-right') {
-    //self trigger event, ignore it 
-    return;
-  }
-  const ids_received = event.detail.ids;
-
-  // handle ids_reveived for 'top-right' module
-  // TODO
-
-
-})
+document.addEventListener('idsShared', handleIdsSharedM2);
 
 //module 'bottom-right'
 document.addEventListener('idsShared', (event) => {
@@ -512,8 +470,6 @@ document.addEventListener('idsShared', (event) => {
 
   // handle ids_reveived for 'bottom-right' module
   // TODO
-  console.log('bottom-right');
-  console.log(ids_received);
 
 })
 
@@ -529,12 +485,8 @@ const module_middle = document.querySelector('.middle');
 // TODO for 'middle' interaction
 
 
-//module 'top-right'
-const module_top_right = document.querySelector('.top-right');
-// TODO for 'top-right' interaction
-module_top_right.addEventListener('click', () => {
-  dispatch_shared_ids([1, 2, 3], 2);
-})
+//  module 'top-right'
+// implemented in the module's initialization
 
 
 // module 'bottom-right'
