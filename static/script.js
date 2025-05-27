@@ -151,7 +151,6 @@ function createMapStats() {
   statsControl.className = 'map-stats';
   statsControl.id = 'map-stats';
   statsControl.innerHTML = 'Loading papers...';
-
   // Add the stats to the map container
   const mapContainer = document.getElementById('china-map');
   mapContainer.appendChild(statsControl);
@@ -306,6 +305,7 @@ map.on('click', (e) => {
 });
 
 // Generate dropdown options from your data and add to map
+// Generate dropdown options from your data and add to map
 function populateMapRegionDropdown(data) {
   const select = document.getElementById('map-region-select');
   const regions = [...new Set(data.map(p => p.region))].sort();
@@ -318,6 +318,7 @@ function populateMapRegionDropdown(data) {
     option.value = region;
     option.textContent = region;
     select.appendChild(option);
+    select.appendChild(option);
   });
 
   // Enhanced event listener with smooth filtering
@@ -326,7 +327,6 @@ function populateMapRegionDropdown(data) {
     const filtered = region
       ? allPaperData.filter(p => p.region === region)
       : allPaperData;
-
     // Add smooth transition effect
     const mapElement = document.getElementById('china-map');
     mapElement.style.opacity = '0.8';
@@ -348,9 +348,10 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') {
     // Reset all markers and info panels with Escape key
     markers.forEach(m => m.setIcon(defaultIcon));
-
     document.querySelector('.bottom-right').innerHTML = `
       <div style="text-align: center; color: #666; padding: 20px;">
+        <h3>Full Transcription</h3>
+        <p>Paper transcription will appear when hovering over markers</p>
         <h3>Full Transcription</h3>
         <p>Paper transcription will appear when hovering over markers</p>
       </div>
