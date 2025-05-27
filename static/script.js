@@ -1,4 +1,5 @@
 import { fetchItems, displayList, handleListClick, handleIdsSharedM2 } from "./top-right.js";
+
 const map = L.map('china-map').setView([32, 104], 4);
 
 // Enhanced tile layer
@@ -451,6 +452,9 @@ Promise.all([
       </div>
     `;
   }
+
+  // Initialize top-right panel using the existing top-right.js functions
+  initializeTopRightModule();
 })
 .catch(error => {
   console.error('Error fetching data:', error);
@@ -462,6 +466,34 @@ Promise.all([
     </div>
   `;
 });
+
+function initializeTopRightModule() {
+  fetchItems()
+    .then(() => {
+      displayList();
+      
+      // Add click event listener to the list
+      const topRightList = document.getElementById('top-right-list');
+      if (topRightList) {
+        topRightList.addEventListener('click', handleListClick);
+      } else {
+        console.error('Could not find top-right-list element after initialization');
+      }
+    })
+    .catch(error => {
+      console.error('Error initializing top-right module:', error);
+      
+      // Show error in the list
+      const topRightList = document.getElementById('top-right-list');
+      if (topRightList) {
+        topRightList.innerHTML = `
+          <li style="color: red; text-align: center; padding: 20px; border: none;">
+            Error loading items: ${error.message}
+          </li>
+        `;
+      }
+    });
+}
 
 function renderMarkers(data) {
   // Clear existing markers
@@ -545,11 +577,19 @@ function renderMarkers(data) {
       this.closePopup();
     });
 
-    // CORRECTED: click sends id to other modules instead of zooming
     marker.on('click', function() {
-      // Send item id to other modules (moduleIndex 1 = 'middle')
-      dispatch_shared_ids([item.id], 1);
-      console.log('Map clicked, sending id:', item.id, 'type:', item.type, 'title:', item.title);
+      let arrayIndex = null;
+      if (item.type === 'item' && item.id.startsWith('item_')) {
+        arrayIndex = parseInt(item.id.replace('item_', ''));
+      } else if (item.type === 'paper' && item.id.startsWith('paper_')) {
+        arrayIndex = parseInt(item.id.replace('paper_', ''));
+      } else if (item.type === 'author' && item.id.startsWith('author_')) {
+        arrayIndex = parseInt(item.id.replace('author_', ''));
+      }
+      
+      if (arrayIndex !== null && !isNaN(arrayIndex)) {
+        dispatch_shared_ids([arrayIndex], 1);
+      }
     });
 
     markers.push(marker);
@@ -570,28 +610,9 @@ map.on('click', (e) => {
         case 'item': m.setIcon(itemIcon); break;
       }
     });
-    
-    // Reset info panels to default hover instructions
-    document.querySelector('.top-right').innerHTML = `
-      <div style="text-align: center; color: #666; padding: 20px;">
-        <h3>All Data Information</h3>
-        <p>Hover over any marker to view details</p>
-        <p style="font-size: 12px; margin-top: 10px;">
-          🔵 Papers • 🟢 Authors • 🟠 Items
-        </p>
-      </div>
-    `;
-    
-    document.querySelector('.bottom-right').innerHTML = `
-      <div style="text-align: center; color: #666; padding: 20px;">
-        <h3>Full Details</h3>
-        <p>Click markers to send data to other modules</p>
-      </div>
-    `;
   }
 });
 
-// Generate dropdown options from all data and add to map
 function populateMapRegionDropdown(data) {
   const regionSelect = document.getElementById('map-region-select');
   const typeSelect = document.getElementById('map-type-select');
@@ -608,7 +629,6 @@ function populateMapRegionDropdown(data) {
     regionSelect.appendChild(option);
   });
 
-  // Event listeners for filtering
   function applyFilters() {
     const selectedRegion = regionSelect.value;
     const selectedType = typeSelect.value;
@@ -639,10 +659,8 @@ function populateMapRegionDropdown(data) {
   typeSelect.addEventListener('change', applyFilters);
 }
 
-// Add keyboard shortcuts for better UX
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') {
-    // Reset all markers and info panels with Escape key
     markers.forEach(m => {
       switch(m.itemData.type) {
         case 'paper': m.setIcon(paperIcon); break;
@@ -650,37 +668,30 @@ document.addEventListener('keydown', function (e) {
         case 'item': m.setIcon(itemIcon); break;
       }
     });
-    
-    document.querySelector('.top-right').innerHTML = `
-      <div style="text-align: center; color: #666; padding: 20px;">
-        <h3>All Data Information</h3>
-        <p>Hover over any marker to view details</p>
-      </div>
-    `;
-    
-    document.querySelector('.bottom-right').innerHTML = `
-      <div style="text-align: center; color: #666; padding: 20px;">
-        <h3>Full Details</h3>
-        <p>Click markers to send data to other modules</p>
-      </div>
-    `;
   }
 });
 
-// Initialize the map controls when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  // Create the filter control, legend and stats display
   createMapFilterControl();
   createMapLegend();
   createMapStats();
 
-  // Initialize with welcome message
-  document.querySelector('.top-right').innerHTML = `
-    <div style="text-align: center; color: #666; padding: 20px;">
-      <h3>Ancient Stones Project</h3>
-      <p>Loading all data sources...</p>
-    </div>
-  `;
+  const topRightElement = document.querySelector('.top-right');
+  
+  if (!document.getElementById('top-right-list')) {
+    topRightElement.innerHTML = `
+      <div class="panel-header">
+        作品列表 (Works List)
+      </div>
+      <div class="list-container" style="flex-grow: 1; min-height: 0;">
+        <ul id="top-right-list">
+          <li style="text-align: center; color: #666; padding: 20px; border: none;">
+            Loading items...
+          </li>
+        </ul>
+      </div>
+    `;
+  }
   
   document.querySelector('.bottom-right').innerHTML = `
     <div style="text-align: center; color: #666; padding: 20px;">
@@ -766,7 +777,19 @@ document.addEventListener('idsShared', (event) => {
   
   // Highlight matching markers
   markers.forEach(marker => {
-    if (ids_received.includes(marker.itemData.id)) {
+    // Convert received array index back to item ID for comparison
+    const matchingIds = ids_received.map(arrayIndex => {
+      if (marker.itemData.type === 'item') {
+        return `item_${arrayIndex}`;
+      } else if (marker.itemData.type === 'paper') {
+        return `paper_${arrayIndex}`;
+      } else if (marker.itemData.type === 'author') {
+        return `author_${arrayIndex}`;
+      }
+      return null;
+    }).filter(id => id !== null);
+    
+    if (matchingIds.includes(marker.itemData.id)) {
       marker.setIcon(highlightedIcon);
       console.log('Highlighted marker:', marker.itemData.title, 'type:', marker.itemData.type);
     }

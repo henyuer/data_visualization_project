@@ -19,21 +19,27 @@
       </select>
     </div>
 
-    <!-- Middle: Map -->
     <div class="box middle">
       <div id="china-map" style="height: 100%;"></div>
     </div>
 
     <!-- Right: Info Panels -->
-    <div class="box top-right" style="display: flex;flex-direction: column;">
+    <div class="box top-right" style="display: flex; flex-direction: column;">
       <div class="panel-header">
         作品列表
       </div>
-      <div class="list-container" style="flex-grow: 1;">
-        <ul id="top-right-list"></ul>
+      <div class="list-container" style="flex-grow: 1; min-height: 0;">
+        <ul id="top-right-list">
+        </ul>
       </div>
     </div>
-    <div class="box bottom-right">Full Transcription</div>
+    
+    <div class="box bottom-right">
+      <h3>Full Details</h3>
+      <div style="color: #666; text-align: center; padding: 20px;">
+        <p>Click on items from the list or map markers to view detailed information</p>
+      </div>
+    </div>
   </div>
 
   <!-- Scripts -->
