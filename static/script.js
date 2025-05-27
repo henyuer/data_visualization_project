@@ -483,7 +483,3 @@ const module_middle = document.querySelector('.middle');
 
 // module 'bottom-right'
 // implemented in the module's initialization
-
-// initial
-// const module_bottom_right = document.querySelector('.bottom-right');
-// TODO for 'bottom-right' interaction
