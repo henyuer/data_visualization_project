@@ -125,6 +125,3 @@ const module_left = document.querySelector('.left');
 // module 'bottom-right'
 const module_bottom_right = document.querySelector('.bottom-right');
 // TODO for 'bottom-right' interaction
-
-console.log('Ancient Stones Project - Main script loaded');
-console.log('Map module initialized separately');
