@@ -10,7 +10,7 @@ export function handleIdsDetails(event) {
     const selectedId = ids_received[0]; // by default print out the first one
 
 
-    fetch(`/items/${0}`) 
+    fetch(`/items/${selectedId}`) 
         .then(res => res.json())
         .then(item => {
             if (item.error) throw new Error(item.error);
@@ -23,14 +23,28 @@ export function handleIdsDetails(event) {
 
 function renderVisualization(bietie) {
     // Clear previous content
-    d3.select('#bottom-right-details').html('');
+    const container = d3.select('#bottom-right-details')
+        .html('')
+        .style('overflow-y', 'auto')  // Enable vertical scrolling
+        .style('height', '90%')     
     
     // Add title
-    d3.select('#bottom-right-details').append('h1')
+    container.append('h1')
         .attr('class', 'bietie-title')
         .text(`《${bietie.name}》`);
     
-    const contentContainer = d3.select('#bottom-right-details').append('div')
+    const mainContainer = container.append('div')
+        .attr('class', 'main-container');
+
+    const imageContainer = mainContainer.append('div')
+        .attr('class', 'image-container');
+
+    imageContainer.append('img')
+        .attr('src', `/data/pictures/${bietie.id}.jpg`)
+        .attr('alt', bietie.name)
+        .attr('class', 'bietie-image');
+
+    const contentContainer = mainContainer.append('div')
         .attr('class', 'content-container');
 
     const steleDiv = contentContainer.append('div')
@@ -43,7 +57,7 @@ function renderVisualization(bietie) {
     }).join('、');
 
     // Add authors 
-    if (authorText && authorText.trim() !== '') {
+    if (authorText && authorText.trim() !== ''){
         steleDiv.append('p')
             .html(`<strong>作者:</strong> ${authorText}`);
     }
@@ -52,31 +66,39 @@ function renderVisualization(bietie) {
     steleDiv.selectAll('.author-link')
         .on('click', function() {
             const authorId = d3.select(this).attr('data-id');
-            // You can add more detailed author information here
-            d3.select('#bottom-right-details').html('');
-            d3.select('#bottom-right-details').append('h2')
-                .text('Author Details');
-            d3.select('#bottom-right-details').append('p')
-                .text(`Author ID: ${authorId}`);
-            // Add more author details as needed
+            
+            // Fetch author details and works
+            fetch(`/authors/${authorId}`)
+                .then(response => response.json())
+                .then(author => {
+                    if (author.error) throw new Error(author.error);
+                    
+                    // Extract work IDs from author's works
+                    const workIds = author.works.map(work => work.id);
+                    
+                    if (workIds.length > 0) {
+                        // Dispatch to other modules (3 = bottom-right module index)
+                        dispatch_shared_ids(workIds, 3);
+                    } else {
+                        console.log('No items found for this author');
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to load author:', error);
+                    // show error to user
+                    d3.select('#bottom-right-details')
+                        .append('div')
+                        .attr('class', 'error')
+                        .text('加载作者信息失败');
+                });
         });
+
 
     if (bietie.calligraphyStyle !== "unknown") {
         steleDiv.append('p')
-            .html(`<strong>书体:</strong> <span class="style-link">${bietie.calligraphyStyle}</span>`);
-
-        // Style click handler
-        steleDiv.select('.style-link')
-            .on('click', function() {
-                const styleText = d3.select(this).text();
-                d3.select('#bottom-right-details').html('');
-                d3.select('#bottom-right-details').append('h2')
-                    .text('Calligraphy Style Details');
-                d3.select('#bottom-right-details').append('p')
-                    .text(`Style: ${styleText}`);
-                // Add more style details as needed
-            });
+            .html(`<strong>书体:</strong> ${bietie.calligraphyStyle}`);
     }
+
 
     if (bietie.stele.temporal !== "unknown") {
         steleDiv.append('p')
@@ -94,7 +116,7 @@ function renderVisualization(bietie) {
     }
 
     // Rubbing details
-    const rubbingDiv = contentContainer.append('div')
+    const rubbingDiv = container.append('div')
         .attr('class', 'rubbing-section');
 
     rubbingDiv.append('h2')
@@ -125,7 +147,7 @@ function renderVisualization(bietie) {
     }
 
     if (bietie.details.text !== "unknown") {
-        const rubbingContentDiv = contentContainer.append('div')
+        const rubbingContentDiv = container.append('div')
             .attr('class', 'rubbing-section');
 
         rubbingContentDiv.append('h2')

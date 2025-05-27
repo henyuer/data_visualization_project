@@ -57,6 +57,16 @@ def get_item_by_id(item_id):
             return jsonify(item)
     return jsonify({'error': 'Item not found'}), 404
 
+@app.route('/authors/<int:author_id>')
+def get_work_by_id(author_id):
+    path = os.path.join(os.path.dirname(__file__), 'data', 'authors.json')
+    with open(path, encoding='utf-8') as f:
+        data = json.load(f)
+    for item in data:
+        if item['id'] == author_id:
+            return jsonify(item)
+    return jsonify({'error': 'Item not found'}), 404
+
 @app.route('/data/pictures/<filename>')
 def get_picture(filename):
     # Security check: Only allow .jpg files

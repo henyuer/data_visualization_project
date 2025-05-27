@@ -1,45 +1,83 @@
-/* Main container */
+/* Main container styling */
+#bottom-right-details {
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Title styling - centered */
+.bietie-title {
+    text-align: center;
+    margin: 0 auto 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+    width: 80%;
+}
+
+/* Main content container */
 .main-container {
     display: flex;
-    gap: 20px;
+    gap: 30px;
     margin-top: 15px;
 }
 
-/* Image container */
+/* Image container (right side) */
 .image-container {
     flex: 0 0 40%;
+    max-width: 400px;
 }
 
 .bietie-image {
     width: 100%;
+    height: auto;
     max-height: 500px;
     object-fit: contain;
+    border: 1px solid #e0e0e0;
 }
 
-/* Content container */
 .content-container {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* Stele info */
+/* Stele info section */
+.stele-info {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
 .stele-info p {
-    margin: 8px 0;
-    line-height: 1.4;
+    line-height: 1.2;
+    color: #495057
 }
 
-/* Rubbing sections */
+/* Rubbing section */
 .rubbing-section {
-    margin-top: 25px;
+    margin-top: 10px;
 }
 
 .section-header {
     font-size: 1.2em;
+    color: #ffff;
     margin-bottom: 10px;
-    color: #333;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.rubbing-info-container {
+    background: #f9f9f9;
+    border-radius: 3px;
+    padding: 10px;
 }
 
 .rubbing-info-container p {
-    margin: 6px 0;
+    line-height: 1.2;
+    color: #495057;
 }
 
 /* Scrollable content */
@@ -47,16 +85,42 @@
     max-height: 300px;
     overflow-y: auto;
     padding: 10px;
-    border: 1px solid #eee;
     background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    line-height: 1.2;
+    color: #495057
 }
 
-/* Interactive elements */
-.author-link, .style-link {
+/* Scrollbar styling */
+.scrollable-content-container::-webkit-scrollbar,
+#bottom-right-details::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollable-content-container::-webkit-scrollbar-track,
+#bottom-right-details::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.scrollable-content-container::-webkit-scrollbar-thumb,
+#bottom-right-details::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 4px;
+}
+
+.scrollable-content-container::-webkit-scrollbar-thumb:hover,
+#bottom-right-details::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* Author link styling */
+.author-link {
     color: #0066cc;
     cursor: pointer;
+    text-decoration: none;
 }
 
-.author-link:hover, .style-link:hover {
+.author-link:hover {
     text-decoration: underline;
 }
