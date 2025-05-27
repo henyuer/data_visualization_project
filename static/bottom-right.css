@@ -1,0 +1,62 @@
+/* Main container */
+.main-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+/* Image container */
+.image-container {
+    flex: 0 0 40%;
+}
+
+.bietie-image {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+}
+
+/* Content container */
+.content-container {
+    flex: 1;
+}
+
+/* Stele info */
+.stele-info p {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+/* Rubbing sections */
+.rubbing-section {
+    margin-top: 25px;
+}
+
+.section-header {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.rubbing-info-container p {
+    margin: 6px 0;
+}
+
+/* Scrollable content */
+.scrollable-content-container {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #eee;
+    background: #f9f9f9;
+}
+
+/* Interactive elements */
+.author-link, .style-link {
+    color: #0066cc;
+    cursor: pointer;
+}
+
+.author-link:hover, .style-link:hover {
+    text-decoration: underline;
+}

@@ -1,3 +1,4 @@
+import { handleIdsDetails } from "./bottom-right.js";
 import { fetchItems, displayList, handleListClick, handleIdsSharedM2 } from "./top-right.js";
 const map = L.map('china-map').setView([32, 104], 4);
 
@@ -777,17 +778,7 @@ document.addEventListener('idsShared', (event) => {
 document.addEventListener('idsShared', handleIdsSharedM2);
 
 //module 'bottom-right'
-document.addEventListener('idsShared', (event) => {
-  if (event.detail.module === 'bottom-right') {
-    //self trigger event, ignore it 
-    return;
-  }
-  const ids_received = event.detail.ids;
-
-  // handle ids_reveived for 'bottom-right' module
-  // TODO
-
-})
+document.addEventListener('idsShared', handleIdsDetails);
 
 //-------------------------------------------------------
 //--------------modules interaction----------
@@ -806,5 +797,8 @@ const module_middle = document.querySelector('.middle');
 
 
 // module 'bottom-right'
-const module_bottom_right = document.querySelector('.bottom-right');
+// implemented in the module's initialization
+
+// initial
+// const module_bottom_right = document.querySelector('.bottom-right');
 // TODO for 'bottom-right' interaction
