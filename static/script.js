@@ -1,3 +1,4 @@
+import { handleIdsDetails } from "./bottom-right.js";
 import { fetchItems, displayList, handleListClick, handleIdsSharedM2 } from "./top-right.js";
 import { ChineseCalligraphyMap } from "./map.js";
 
@@ -99,16 +100,8 @@ document.addEventListener('idsShared', (event) => {
 document.addEventListener('idsShared', handleIdsSharedM2);
 
 //module 'bottom-right'
-document.addEventListener('idsShared', (event) => {
-  if (event.detail.module === 'bottom-right') {
-    //self trigger event, ignore it 
-    return;
-  }
-  const ids_received = event.detail.ids;
+document.addEventListener('idsShared', handleIdsDetails);
 
-  // handle ids_reveived for 'bottom-right' module
-  // TODO
-})
 
 //-------------------------------------------------------
 //--------------modules interaction----------
@@ -123,5 +116,4 @@ const module_left = document.querySelector('.left');
 // implemented in the module's initialization
 
 // module 'bottom-right'
-const module_bottom_right = document.querySelector('.bottom-right');
-// TODO for 'bottom-right' interaction
+// implemented in the module's initialization
