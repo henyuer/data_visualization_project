@@ -1,5 +1,13 @@
 import { dispatch_shared_ids } from "./script.js";
 
+fetch(`/items/0`)
+    .then(res => res.json())
+    .then(item => {
+        if (item.error) throw new Error(item.error);
+        renderVisualization(item);
+    })
+    .catch(err => console.error('Failed to load default item:', err));
+
 export function handleIdsDetails(event) {
     if (event.detail.module === 'bottom-right') {
         //self trigger event, ignore it 
@@ -7,8 +15,7 @@ export function handleIdsDetails(event) {
     }
     const ids_received = event.detail.ids;
 
-    const selectedId = ids_received[0]; // by default print out the first one
-
+    const selectedId = ids_received[0];
 
     fetch(`/items/${selectedId}`) 
         .then(res => res.json())
