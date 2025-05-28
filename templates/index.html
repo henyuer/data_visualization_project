@@ -1,31 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 
 <head>
   <meta charset="utf-8">
   <title>Ancient Stones Project</title>
+
+  <!-- Leaflet 地图库 -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- D3.js（如其他模块使用） -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <!-- ECharts 图表库 -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+  <!-- 项目样式 -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='top-right.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='top-right.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bottom-right.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='map.css') }}">
+
+  <!-- ✅ 左侧图表模块样式 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='left-panel.css') }}">
 </head>
 
 <body>
   <div class="container">
-    <!-- Left: Filter -->
-    <div class="box left">
-      <h3>Filter by Region</h3>
-      <select id="region-select">
-        <option value="">All Regions</option>
-      </select>
+    <!-- ✅ 左侧：筛选 + 图表 -->
+    <div class="box left" style="display: flex; flex-direction: column; padding: 10px; background-color: #f9f9f9;">
+      <!-- 地区筛选 -->
+      <div>
+        <h3>Filter by Region</h3>
+        <select id="region-select">
+          <option value="">All Regions</option>
+        </select>
+      </div>
+
+      <!-- 图表容器 -->
+      <div id="left-panel" style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+        <div id="chart-font-style"></div>
+        <div id="chart-stele-dynasty"></div>
+        <div id="chart-print-dynasty"></div>
+      </div>
     </div>
 
-    <!-- Middle: Map -->
+    <!-- 中间：地图 -->
     <div class="box middle">
       <div id="china-map" style="height: 100%;"></div>
     </div>
 
-    <!-- Right: Info Panels -->
-    <div class="box top-right" style="display: flex;flex-direction: column;">
+    <!-- 右上：作品列表 -->
+    <div class="box top-right" style="display: flex; flex-direction: column;">
       <div class="panel-header">
         作品列表
       </div>
@@ -33,12 +59,18 @@
         <ul id="top-right-list"></ul>
       </div>
     </div>
-    <div class="box bottom-right">Full Transcription</div>
+
+    <!-- 右下：作品详情 -->
+    <div class="box bottom-right" id="bottom-right-details">
+      <!-- 详情内容由 JS 动态填充 -->
+    </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- 主模块脚本 -->
   <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
+
+  <!-- ✅ 左侧图表逻辑 -->
+  <script src="{{ url_for('static', filename='left-panel.js') }}"></script>
 </body>
 
 </html>

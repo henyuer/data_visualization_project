@@ -1,0 +1,17 @@
+/* static/left-panel.css */
+
+#left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#left-panel > div {
+  flex: 1;
+  min-height: 180px;
+  padding: 5px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+}
