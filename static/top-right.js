@@ -43,8 +43,14 @@ export async function fetchItems() {
 
 export function handleListClick(event) {
     const clickedLi = event.target.closest('li');
+    const listContainer = event.currentTarget;
 
     if (clickedLi && event.currentTarget.contains(clickedLi)) {
+        const allLis = listContainer.querySelectorAll('li');
+        allLis.forEach(li => {
+            li.classList.remove('active');
+        });
+        clickedLi.classList.add('active');
 
         const id = clickedLi.dataset.id;
         dispatch_shared_ids([id], 2);
