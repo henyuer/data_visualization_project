@@ -15,7 +15,7 @@
 
 .top-right .panel-header {
     /* height: 1.5em; */
-    padding: 16px 20px;
+    padding: 10px 20px;
     /* 舒适的内边距 */
     background-color: #6c757d;
     /* 柔和的灰色作为头部背景，与浅色文字搭配 */
@@ -47,7 +47,7 @@
 
 .top-right li {
     /* white-space: nowrap; */
-    padding: 12px 20px;
+    padding: 6px 20px;
     /* 列表项内边距，左右与头部对齐 */
     border-bottom: 1px solid #e9ecef;
     /* 更细致的分隔线颜色 */
@@ -74,6 +74,16 @@
     /* 鼠标悬停时的背景色 - 使用一个明亮的强调色 */
     color: #ffffff;
     /* 悬停时文字变为白色 */
+}
+
+.top-right li.active {
+    /* 新增的点击后高亮样式 */
+    background-color: #FFEB3B;
+    /* 推荐的黄色 */
+    color: #333333;
+    /* 高亮时文字颜色，深灰色通常在黄色背景上可读性好 */
+    /* 你也可以选择保持白色文字，如果黄色足够深的话 */
+    /* color: #ffffff; */
 }
 
 /* --- 滚动条美化 (可选，兼容性主要在 Webkit 内核浏览器) --- */
