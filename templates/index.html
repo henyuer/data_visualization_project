@@ -1,37 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 
 <head>
   <meta charset="utf-8">
   <title>Ancient Stones Project</title>
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='top-right.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='top-right.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='bottom-right.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='map.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='map.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='left-panel.css') }}">
+
 </head>
 
 <body>
   <div class="container">
-    <!-- Left: Filter -->
-    <div class="box left">
-      <h3>Filter by Region</h3>
-      <select id="region-select">
-        <option value="">All Regions</option>
-      </select>
+    <!-- ✅ 左侧：图表（已移除地区筛选器） -->
+    <div class="box left" style="display: flex; flex-direction: column; padding: 10px; background-color: #f9f9f9;">
+      <div id="left-panel" style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+        <div id="chart-font-style"></div>
+        <div id="chart-stele-dynasty"></div>
+        <div id="chart-print-dynasty"></div>
+      </div>
     </div>
 
-    <!-- Middle: Map -->
     <div class="box middle">
       <div id="china-map" style="height: 100%;"></div>
     </div>
 
-    <!-- Right: Info Panels -->
-    <div class="box top-right" style="display: flex;flex-direction: column;">
-      <div class="panel-header">
-        作品列表
-      </div>
+    <div class="box top-right" style="display: flex; flex-direction: column;">
+      <div class="panel-header">作品列表</div>
       <div class="list-container" style="flex-grow: 1;">
         <ul id="top-right-list"></ul>
       </div>
@@ -41,9 +46,8 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='left-panel.js') }}"></script>
 </body>
 
 </html>
