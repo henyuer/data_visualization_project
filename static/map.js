@@ -143,7 +143,7 @@ class ChineseCalligraphyMap {
     this.populateRegionDropdown();
   }
 
-  // Populate region dropdown
+  // Populate region dropdown with ID broadcasting
   populateRegionDropdown() {
     const select = document.getElementById('map-region-select');
     const regions = [...new Set(this.allMapData.map(item => item.region))].sort();
@@ -157,12 +157,19 @@ class ChineseCalligraphyMap {
       select.appendChild(option);
     });
 
-    // Add event listener for filtering
+    // Add event listener for filtering with ID broadcasting
     select.addEventListener('change', () => {
       const region = select.value;
-      const filtered = region
-        ? this.allMapData.filter(item => item.region === region)
-        : this.allMapData;
+      let filtered, filteredIds;
+
+      if (region) {
+        filtered = this.allMapData.filter(item => item.region === region);
+        // Remove duplicates using Set
+        filteredIds = [...new Set(filtered.map(item => item.id))];
+      } else {
+        filtered = this.allMapData;
+        filteredIds = []; // Empty array means show all
+      }
 
       // Smooth transition
       const mapElement = document.getElementById(this.containerId);
@@ -172,6 +179,10 @@ class ChineseCalligraphyMap {
         this.renderMarkers(filtered);
         mapElement.style.opacity = '1';
         this.updateStats(this.allMapData.length, filtered.length, region);
+        
+        // Broadcast the deduplicated IDs to other modules
+        this.dispatchMapSelection(filteredIds);
+        
       }, 200);
     });
   }
@@ -219,14 +230,6 @@ class ChineseCalligraphyMap {
                 <strong>作者:</strong> ${item.author} (${item.authorRole})
               </p>
             ` : ''}
-          </div>
-          <p style="margin: 0 0 8px 0; font-size: 11px; color: #888; line-height: 1.4;">
-            ${item.text ? item.text.substring(0, 100) + '...' : 'Click marker for details'}
-          </p>
-          <div style="border-top: 1px solid #eee; padding-top: 6px;">
-            <p style="margin: 0; font-size: 10px; color: #999;">
-              Hover for details, click to select
-            </p>
           </div>
         </div>
       `;
